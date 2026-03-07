@@ -1,0 +1,301 @@
+{
+    "triplets": [
+        {
+            "subject_name": "控制单元（CU）故障",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统停机",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "功率单元故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统输出异常",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "电机模块（MM）故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控系统触发",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "液压模块（HLA）故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "液压执行机构动作异常",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "编码器及传感器故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制精度及系统稳定性受影响",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "端子模块（TM54F/TM31等）故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全指令无法正常触发或反馈",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "通讯组件故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "系统协同运行受影响",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "辅助组件故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "系统正常运行受影响",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "内部软件错误",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "写RAM失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "内部软件超时",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "风扇使用寿命到期",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "固件被修改",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "组件列表被更改",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "需要存储所有参数",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "安全监控通道发现一处故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "SI CU:STOP A被触发",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "并联功率单元STO输入不同",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控通道发现一处故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "制动控制出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控通道发现一处故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "断流阀控制/反馈出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控通道发现一处故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "电机抱闸/SBC配置无意义",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控通道发现一处故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "组件更换需应答/保存",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "组件更换需保存",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "安全功能内部软件错误",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "控制单元（CU）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "必须进行验收测试",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控通道发现一处故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "安全时间片同步失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全监控通道发现一处故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "单位转换：参考值更改后参数值计算失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "单位转换：参考参数无效",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "驱动类型不明",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "下载DRIVE-CLiQ组件的固件失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "DRIVE-CLiQ组件的固件需要升级",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "DRIVE-CLiQ组件需要重新上电",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "项目转化出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        },
+        {
+            "subject_name": "控制单元过热",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器信号处理受影响",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "test.pdf"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+dashscope
+pydantic
+python-dotenv
+pdfplumber
+pytesseract
+tenacity
+Pillow

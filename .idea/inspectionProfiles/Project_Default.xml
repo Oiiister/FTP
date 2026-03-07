@@ -1,0 +1,26 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="face_alignment" />
+          <option value="imageio" />
+          <option value="imageio-ffmpeg" />
+          <option value="resampy" />
+          <option value="pydub" />
+          <option value="kornia" />
+          <option value="yacs" />
+          <option value="pyyaml" />
+          <option value="scikit-image" />
+          <option value="basicsr" />
+          <option value="facexlib" />
+          <option value="gradio" />
+          <option value="gfpgan" />
+          <option value="av" />
+          <option value="safetensors" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
