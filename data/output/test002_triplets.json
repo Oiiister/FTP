@@ -1,0 +1,85 @@
+{
+    "triplets": [
+        {
+            "subject_name": "主泵排量调节失效",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "供油系统故障路径1",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "溢流阀密封圈破损",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "供油系统故障路径1",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "供油系统故障路径1",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "系统油压严重不足",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "系统油压严重不足",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "执行机构动作失准",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "比例阀线圈烧毁",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "控制电路故障路径1",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "伺服放大器输出限幅故障",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "控制电路故障路径1",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "控制电路故障路径1",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "控制信号链路中断",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "控制信号链路中断",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "执行机构动作失准",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "test002.txt"
+        },
+        {
+            "subject_name": "外部负载瞬时冲击过载",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "执行机构动作出现瞬时异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "test002.txt"
+        }
+    ]
+}

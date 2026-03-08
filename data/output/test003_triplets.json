@@ -1,0 +1,148 @@
+{
+    "triplets": [
+        {
+            "subject_name": "220kV 主进线 I 跳闸",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "双回进线同时中断",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "只有当220kV 主进线 I 跳闸，且伴随220kV 主进线 II 跳闸时，这种双回进线同时中断的局面才会形成"
+        },
+        {
+            "subject_name": "220kV 主进线 II 跳闸",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "双回进线同时中断",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "只有当220kV 主进线 I 跳闸，且伴随220kV 主进线 II 跳闸时，这种双回进线同时中断的局面才会形成"
+        },
+        {
+            "subject_name": "220kV 母线差动保护动作",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "外网电源全部切断",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "一旦220kV 母线差动保护动作，无论进线状态如何，都将直接导致外网电源全部切断"
+        },
+        {
+            "subject_name": "双回进线同时中断",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "外网失电",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "上述两种情形任意一种发生，即构成外网失电"
+        },
+        {
+            "subject_name": "外网电源全部切断",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "外网失电",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "上述两种情形任意一种发生，即构成外网失电"
+        },
+        {
+            "subject_name": "#1 主变重瓦斯保护动作",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "#1 主变恶性故障停机",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "对于#1 主变，仅当其发生#1 主变重瓦斯保护动作（本体严重故障），并且关键的#1 主变后备保护拒动（未能隔离故障扩大）时，才会形成#1 主变恶性故障停机"
+        },
+        {
+            "subject_name": "#1 主变后备保护拒动",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "#1 主变恶性故障停机",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "对于#1 主变，仅当其发生#1 主变重瓦斯保护动作（本体严重故障），并且关键的#1 主变后备保护拒动（未能隔离故障扩大）时，才会形成#1 主变恶性故障停机"
+        },
+        {
+            "subject_name": "#2 主变重瓦斯保护动作",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "#2 主变恶性故障停机",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "同理，#2 主变也需满足#2 主变重瓦斯保护动作与#2 主变后备保护拒动的共同作用，才会导致#2 主变恶性故障停机"
+        },
+        {
+            "subject_name": "#2 主变后备保护拒动",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "#2 主变恶性故障停机",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "同理，#2 主变也需满足#2 主变重瓦斯保护动作与#2 主变后备保护拒动的共同作用，才会导致#2 主变恶性故障停机"
+        },
+        {
+            "subject_name": "#1 主变恶性故障停机",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "所有主变压器退出运行",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "只要#1 或#2 任一台主变出现这种“本体故障 + 保护失效”的恶性组合，就会导致所有主变压器退出运行的后果"
+        },
+        {
+            "subject_name": "#2 主变恶性故障停机",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "所有主变压器退出运行",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "只要#1 或#2 任一台主变出现这种“本体故障 + 保护失效”的恶性组合，就会导致所有主变压器退出运行的后果"
+        },
+        {
+            "subject_name": "直流蓄电池组爆炸起火",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "全站控制电源消失",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "若发生直流蓄电池组爆炸起火，全站控制电源将瞬间消失"
+        },
+        {
+            "subject_name": "全站控制电源消失",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "所有断路器失控",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "全站控制电源将瞬间消失，导致所有断路器失控"
+        },
+        {
+            "subject_name": "所有断路器失控",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "220kV 变电站全站失压",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "直接造成220kV 变电站全站失压"
+        },
+        {
+            "subject_name": "外网失电",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "220kV 变电站全站失压",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "综上所述，全站失压的逻辑链条为：(外网双线同断 或 母线保护动作) OR (#1 主变恶性故障或 #2 主变恶性故障) OR 直流系统爆炸"
+        },
+        {
+            "subject_name": "所有主变压器退出运行",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "220kV 变电站全站失压",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "综上所述，全站失压的逻辑链条为：(外网双线同断 或 母线保护动作) OR (#1 主变恶性故障或 #2 主变恶性故障) OR 直流系统爆炸"
+        }
+    ]
+}

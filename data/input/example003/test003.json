@@ -1,0 +1,121 @@
+{
+"triplets": [
+{
+"subject_name": "220kV 主进线 I 跳闸",
+"subject_type": "BasicEvent",
+"relation": "jointly_resultsIn",
+"object_name": "双回进线同时中断",
+"object_type": "IntermediateEvent",
+"confidence": 0.95,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "220kV 主进线 II 跳闸",
+"subject_type": "BasicEvent",
+"relation": "jointly_resultsIn",
+"object_name": "双回进线同时中断",
+"object_type": "IntermediateEvent",
+"confidence": 0.95,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "双回进线同时中断",
+"subject_type": "IntermediateEvent",
+"relation": "resultsIn",
+"object_name": "外网电源全部切断",
+"object_type": "IntermediateEvent",
+"confidence": 0.98,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "220kV 母线差动保护动作",
+"subject_type": "BasicEvent",
+"relation": "resultsIn",
+"object_name": "外网电源全部切断",
+"object_type": "IntermediateEvent",
+"confidence": 0.99,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "#1 主变重瓦斯保护动作",
+"subject_type": "BasicEvent",
+"relation": "jointly_resultsIn",
+"object_name": "#1 主变恶性故障停机",
+"object_type": "IntermediateEvent",
+"confidence": 0.96,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "#1 主变后备保护拒动",
+"subject_type": "BasicEvent",
+"relation": "jointly_resultsIn",
+"object_name": "#1 主变恶性故障停机",
+"object_type": "IntermediateEvent",
+"confidence": 0.96,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "#1 主变恶性故障停机",
+"subject_type": "IntermediateEvent",
+"relation": "resultsIn",
+"object_name": "所有主变压器退出运行",
+"object_type": "IntermediateEvent",
+"confidence": 0.97,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "#2 主变重瓦斯保护动作",
+"subject_type": "BasicEvent",
+"relation": "jointly_resultsIn",
+"object_name": "#2 主变恶性故障停机",
+"object_type": "IntermediateEvent",
+"confidence": 0.96,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "#2 主变后备保护拒动",
+"subject_type": "BasicEvent",
+"relation": "jointly_resultsIn",
+"object_name": "#2 主变恶性故障停机",
+"object_type": "IntermediateEvent",
+"confidence": 0.96,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "#2 主变恶性故障停机",
+"subject_type": "IntermediateEvent",
+"relation": "resultsIn",
+"object_name": "所有主变压器退出运行",
+"object_type": "IntermediateEvent",
+"confidence": 0.97,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "外网电源全部切断",
+"subject_type": "IntermediateEvent",
+"relation": "resultsIn",
+"object_name": "220kV 变电站全站失压",
+"object_type": "TopEvent",
+"confidence": 0.99,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "所有主变压器退出运行",
+"subject_type": "IntermediateEvent",
+"relation": "resultsIn",
+"object_name": "220kV 变电站全站失压",
+"object_type": "TopEvent",
+"confidence": 0.99,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+},
+{
+"subject_name": "直流蓄电池组爆炸起火",
+"subject_type": "BasicEvent",
+"relation": "resultsIn",
+"object_name": "220kV 变电站全站失压",
+"object_type": "TopEvent",
+"confidence": 0.98,
+"source": "智能电网变电站故障录波分析报告_2023Q4"
+}
+]
+}

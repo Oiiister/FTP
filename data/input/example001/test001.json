@@ -1,0 +1,212 @@
+{
+  "triplets": [
+    {
+      "subject_name": "电气驱动系统故障",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "空压机系统无法正常启动",
+      "object_type": "TopEvent",
+      "confidence": 0.95,
+      "source": "电气驱动系统异常会导致空压机无法启动"
+    },
+    {
+      "subject_name": "气路系统异常",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "空压机系统无法正常启动",
+      "object_type": "TopEvent",
+      "confidence": 0.94,
+      "source": "气路系统异常可能导致空压机无法启动"
+    },
+    {
+      "subject_name": "控制系统故障",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "空压机系统无法正常启动",
+      "object_type": "TopEvent",
+      "confidence": 0.93,
+      "source": "控制系统异常会阻止空压机启动"
+    },
+    {
+      "subject_name": "保护联锁触发",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "空压机系统无法正常启动",
+      "object_type": "TopEvent",
+      "confidence": 0.92,
+      "source": "保护联锁触发会阻止设备启动"
+    },
+
+    {
+      "subject_name": "主电机故障",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "电气驱动系统故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "主电机异常会导致电气驱动系统故障"
+    },
+    {
+      "subject_name": "变频器故障",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "电气驱动系统故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.93,
+      "source": "变频器异常会导致驱动系统故障"
+    },
+    {
+      "subject_name": "电源异常",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "电气驱动系统故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.93,
+      "source": "电源异常会影响驱动系统"
+    },
+
+    {
+      "subject_name": "电机绕组短路",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "主电机故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.96,
+      "source": "电机绕组短路会导致主电机故障"
+    },
+    {
+      "subject_name": "电机轴承损坏",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "主电机故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.95,
+      "source": "轴承损坏会引起电机故障"
+    },
+    {
+      "subject_name": "电机过热保护触发",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "主电机故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "电机过热保护触发导致电机停机"
+    },
+
+    {
+      "subject_name": "变频器过流保护",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "变频器故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.95,
+      "source": "变频器过流保护会导致变频器故障"
+    },
+    {
+      "subject_name": "变频器散热风扇故障",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "变频器故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "散热风扇损坏导致变频器过热"
+    },
+
+    {
+      "subject_name": "三相电压不平衡",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "电源异常",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.95,
+      "source": "三相电压不平衡会造成电源异常"
+    },
+    {
+      "subject_name": "供电电压过低",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "电源异常",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "供电电压过低会影响设备供电"
+    },
+
+    {
+      "subject_name": "进气过滤器堵塞",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "进气系统堵塞",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.95,
+      "source": "进气过滤器堵塞导致进气系统阻塞"
+    },
+    {
+      "subject_name": "进气阀卡滞",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "进气系统堵塞",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "进气阀卡滞会影响空气进入系统"
+    },
+
+    {
+      "subject_name": "进气系统堵塞",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "气路系统异常",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.93,
+      "source": "进气系统堵塞会导致气路系统异常"
+    },
+
+    {
+      "subject_name": "PLC控制程序异常",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "控制系统故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "PLC控制程序异常导致控制系统故障"
+    },
+
+    {
+      "subject_name": "PROFINET通讯中断",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "通讯网络故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.95,
+      "source": "PROFINET通讯中断导致网络故障"
+    },
+
+    {
+      "subject_name": "通讯网络故障",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "控制系统故障",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.93,
+      "source": "通讯网络故障会影响控制系统"
+    },
+
+    {
+      "subject_name": "高温保护触发",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "保护联锁触发",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "设备温度过高触发保护联锁"
+    },
+    {
+      "subject_name": "润滑油油位过低保护",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "保护联锁触发",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.94,
+      "source": "油位过低触发保护联锁"
+    }
+  ]
+}
