@@ -5,3 +5,10 @@ pdfplumber
 pytesseract
 tenacity
 Pillow
+pandas
+openpyxl
+transformers
+torch
+accelerate
+sentence-transformers
+python-docx

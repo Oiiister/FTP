@@ -6,9 +6,8 @@ python main.py
 # 进入你的项目根目录
 python main.py --files example001/test001.txt
 
-同时处理多个特定文件：
-Bash
-python main.py --files doc1.pdf doc2.docx report.txt
 
 
-python main.py --files example003/test003.txt
+
+python main.py --files example002/test002.txt
+python main.py --files example002/test002.docx

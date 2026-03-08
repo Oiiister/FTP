@@ -24,7 +24,7 @@
             "relation": "resultsIn",
             "object_name": "外网电源全部切断",
             "object_type": "IntermediateEvent",
-            "confidence": 1.0,
+            "confidence": 0.98,
             "source": "一旦220kV 母线差动保护动作，无论进线状态如何，都将直接导致外网电源全部切断"
         },
         {
@@ -105,7 +105,7 @@
             "relation": "resultsIn",
             "object_name": "全站控制电源消失",
             "object_type": "IntermediateEvent",
-            "confidence": 1.0,
+            "confidence": 0.98,
             "source": "若发生直流蓄电池组爆炸起火，全站控制电源将瞬间消失"
         },
         {
@@ -144,5 +144,10 @@
             "confidence": 0.98,
             "source": "综上所述，全站失压的逻辑链条为：(外网双线同断 或 母线保护动作) OR (#1 主变恶性故障或 #2 主变恶性故障) OR 直流系统爆炸"
         }
-    ]
+    ],
+    "multimodal_info": {
+        "file_type": ".txt",
+        "embedding_dim": 1024,
+        "embedding_available": true
+    }
 }
