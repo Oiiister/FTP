@@ -1,0 +1,34 @@
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# 依赖
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 环境变量
+.env
+
+# 输出数据（可按需调整）
+data/output/
+src/results.json
+
+# Jupyter 检查点
+.ipynb_checkpoints/
