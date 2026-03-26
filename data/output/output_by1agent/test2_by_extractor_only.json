@@ -1,0 +1,94 @@
+{
+  "triplets": [
+    {
+      "subject_name": "控制单元主板损坏",
+      "subject_type": "BasicEvent",
+      "relation": "jointly_resultsIn",
+      "object_name": "组合故障路径1",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.98,
+      "source": "涉及组件：控制单元主板、内部存储器、⻛扇、通讯接⼝（DRIVE-CLiQ、PROFIBUS/PROFINET）、固件存储模块（存储卡/设备存储器）、RAM芯⽚等，组件损坏或接触不良会触发对应故障。"
+    },
+    {
+      "subject_name": "内部存储器损坏",
+      "subject_type": "BasicEvent",
+      "relation": "jointly_resultsIn",
+      "object_name": "组合故障路径1",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.98,
+      "source": "涉及组件：控制单元主板、内部存储器、⻛扇、通讯接⼝（DRIVE-CLiQ、PROFIBUS/PROFINET）、固件存储模块（存储卡/设备存储器）、RAM芯⽚等，组件损坏或接触不良会触发对应故障。"
+    },
+    {
+      "subject_name": "组合故障路径1",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "驱动系统硬件异常",
+      "object_type": "TopEvent",
+      "confidence": 0.98,
+      "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+    },
+    {
+      "subject_name": "功率单元过流",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "驱动系统停机",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.98,
+      "source": "功率单元：承担电能转换与传输功能，为电机、液压模块等执⾏机构提供适配功率，关联过流、过热、过载、功率电⼦元器件损坏等硬件故障，是硬件故障树的关键底事件关联组件，其故障可能引发驱动系统停机、输出异常等上层故障现象。"
+    },
+    {
+      "subject_name": "功率单元过热",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "驱动系统停机",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.98,
+      "source": "功率单元：承担电能转换与传输功能，为电机、液压模块等执⾏机构提供适配功率，关联过流、过热、过载、功率电⼦元器件损坏等硬件故障，是硬件故障树的关键底事件关联组件，其故障可能引发驱动系统停机、输出异常等上层故障现象。"
+    },
+    {
+      "subject_name": "驱动系统停机",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "驱动系统硬件异常",
+      "object_type": "TopEvent",
+      "confidence": 0.98,
+      "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+    },
+    {
+      "subject_name": "编码器信号丢失",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "闭环控制异常",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.98,
+      "source": "编码器及传感器：包括通道1、通道2编码器模块及各类传感器，负责采集转速、位置、温度等实际值，为闭环控制提供数据⽀撑，关联实际值错误、信号丢失等故障，直接影响控制精度及系统稳定性。"
+    },
+    {
+      "subject_name": "闭环控制异常",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "驱动系统硬件异常",
+      "object_type": "TopEvent",
+      "confidence": 0.98,
+      "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+    },
+    {
+      "subject_name": "端子模块故障",
+      "subject_type": "BasicEvent",
+      "relation": "resultsIn",
+      "object_name": "安全指令无法正常触发",
+      "object_type": "IntermediateEvent",
+      "confidence": 0.98,
+      "source": "端⼦模块（TM54F/TM31等）：负责数字量/模拟量信号的输⼊输出，尤其是TM54F作为故障安全数字输⼊模块，关联安全功能的信号传输，其故障会导致安全指令⽆法正常触发或反馈。"
+    },
+    {
+      "subject_name": "安全指令无法正常触发",
+      "subject_type": "IntermediateEvent",
+      "relation": "resultsIn",
+      "object_name": "驱动系统硬件异常",
+      "object_type": "TopEvent",
+      "confidence": 0.98,
+      "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+    }
+  ]
+}
