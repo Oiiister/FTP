@@ -1,0 +1,1048 @@
+{
+    "triplets": [
+        {
+            "subject_name": "控制单元（CU）故障",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+        },
+        {
+            "subject_name": "功率单元故障",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+        },
+        {
+            "subject_name": "编码器及传感器故障",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+        },
+        {
+            "subject_name": "辅助组件故障",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件，底事件涵盖控制单元、功率单元、编码器及传感器、辅助组件等各类硬件的故障"
+        },
+        {
+            "subject_name": "过流",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "功率单元故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "功率单元：承担电能转换与传输功能，为电机、液压模块等执⾏机构提供适配功率，关联过流、过热、过载、功率电⼦元器件损坏等硬件故障"
+        },
+        {
+            "subject_name": "过热",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "功率单元故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "功率单元：承担电能转换与传输功能，为电机、液压模块等执⾏机构提供适配功率，关联过流、过热、过载、功率电⼦元器件损坏等硬件故障"
+        },
+        {
+            "subject_name": "过载",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "功率单元故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "功率单元：承担电能转换与传输功能，为电机、液压模块等执⾏机构提供适配功率，关联过流、过热、过载、功率电⼦元器件损坏等硬件故障"
+        },
+        {
+            "subject_name": "功率电⼦元器件损坏",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "功率单元故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "功率单元：承担电能转换与传输功能，为电机、液压模块等执⾏机构提供适配功率，关联过流、过热、过载、功率电⼦元器件损坏等硬件故障"
+        },
+        {
+            "subject_name": "电机过载",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "电机模块（MM）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "电机模块（MM）：连接控制单元与电机，负责电机转速、转矩的精准控制，关联电机过载、接地/相位短路、制动控制故障等"
+        },
+        {
+            "subject_name": "接地/相位短路",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "电机模块（MM）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "电机模块（MM）：连接控制单元与电机，负责电机转速、转矩的精准控制，关联电机过载、接地/相位短路、制动控制故障等"
+        },
+        {
+            "subject_name": "制动控制故障",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "电机模块（MM）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "电机模块（MM）：连接控制单元与电机，负责电机转速、转矩的精准控制，关联电机过载、接地/相位短路、制动控制故障等"
+        },
+        {
+            "subject_name": "断流阀连接故障",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "液压模块（HLA）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "液压模块（HLA）：适配液压驱动场景，负责断流阀控制、压⼒调节等功能，关联断流阀连接故障、反馈信号异常等"
+        },
+        {
+            "subject_name": "反馈信号异常",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "液压模块（HLA）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "液压模块（HLA）：适配液压驱动场景，负责断流阀控制、压⼒调节等功能，关联断流阀连接故障、反馈信号异常等"
+        },
+        {
+            "subject_name": "实际值错误",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "编码器及传感器：包括通道1、通道2编码器模块及各类传感器，负责采集转速、位置、温度等实际值，为闭环控制提供数据⽀撑，关联实际值错误、信号丢失等故障"
+        },
+        {
+            "subject_name": "信号丢失",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "编码器及传感器故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "编码器及传感器：包括通道1、通道2编码器模块及各类传感器，负责采集转速、位置、温度等实际值，为闭环控制提供数据⽀撑，关联实际值错误、信号丢失等故障"
+        },
+        {
+            "subject_name": "安全指令无法正常触发或反馈",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "端子模块（TM54F/TM31等）故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "端⼦模块（TM54F/TM31等）：负责数字量/模拟量信号的输⼊输出，尤其是TM54F作为故障安全数字输⼊模块，关联安全功能的信号传输，其故障会导致安全指令⽆法正常触发或反馈"
+        },
+        {
+            "subject_name": "通讯中断",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "通讯组件故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "通讯组件：包括DRIVE-CLiQ集线器、通讯板、PROFIBUS/PROFINET接⼝等，负责组件间及与上位控制器的通讯，关联通讯中断、数据传输错误等故障"
+        },
+        {
+            "subject_name": "数据传输错误",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "通讯组件故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "通讯组件：包括DRIVE-CLiQ集线器、通讯板、PROFIBUS/PROFINET接⼝等，负责组件间及与上位控制器的通讯，关联通讯中断、数据传输错误等故障"
+        },
+        {
+            "subject_name": "制动故障",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "辅助组件故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "辅助组件：包括制动模块、电源滤波器、冷却装置、风扇等，负责系统制动、电磁兼容滤波、温度控制等辅助功能，关联制动故障、过热、滤波异常等"
+        },
+        {
+            "subject_name": "过热",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "辅助组件故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "辅助组件：包括制动模块、电源滤波器、冷却装置、风扇等，负责系统制动、电磁兼容滤波、温度控制等辅助功能，关联制动故障、过热、滤波异常等"
+        },
+        {
+            "subject_name": "滤波异常",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "辅助组件故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 1.0,
+            "source": "辅助组件：包括制动模块、电源滤波器、冷却装置、风扇等，负责系统制动、电磁兼容滤波、温度控制等辅助功能，关联制动故障、过热、滤波异常等"
+        },
+        {
+            "subject_name": "控制单元主板电容⿎包",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "内部软件错误",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障重复出现，需检查控制单元主板是否存在电容⿎包、芯⽚烧毁等硬件损坏"
+        },
+        {
+            "subject_name": "控制单元主板芯⽚烧毁",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "内部软件错误",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障重复出现，需检查控制单元主板是否存在电容⿎包、芯⽚烧毁等硬件损坏"
+        },
+        {
+            "subject_name": "内部软件错误",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件"
+        },
+        {
+            "subject_name": "控制单元内部存储器连接不良",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "存储器访问应答延迟",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "针对F01003（存储器访问应答延迟）故障，需检查控制单元内部存储器的连接状态"
+        },
+        {
+            "subject_name": "控制单元内部存储器损坏",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "存储器访问应答延迟",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "同时检查存储器是否存在损坏，可通过替换存储卡的⽅式排查"
+        },
+        {
+            "subject_name": "存储器访问应答延迟",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件"
+        },
+        {
+            "subject_name": "DRIVE-CLiQ组件连接不良",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "DRIVE-CLiQ组件属性变化",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "需根据故障值r0949对应的组件号，检查该DRIVE-CLiQ组件的连接状态"
+        },
+        {
+            "subject_name": "DRIVE-CLiQ组件损坏",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "DRIVE-CLiQ组件属性变化",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "需检查组件是否损坏，必要时更换对应组件"
+        },
+        {
+            "subject_name": "DRIVE-CLiQ组件属性变化",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件"
+        },
+        {
+            "subject_name": "RAM芯⽚连接不良",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "写RAM失败",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "需检查RAM芯⽚的连接状态，排查是否存在接触不良或芯⽚损坏"
+        },
+        {
+            "subject_name": "RAM芯⽚损坏",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "写RAM失败",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "需检查RAM芯⽚的连接状态，排查是否存在接触不良或芯⽚损坏"
+        },
+        {
+            "subject_name": "写RAM失败",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件"
+        },
+        {
+            "subject_name": "瞬时电压波动",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "内部软件超时",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "需重新为所有组件上电，排查是否为瞬时电压波动导致"
+        },
+        {
+            "subject_name": "过多驱动功能启⽤",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "内部软件超时",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "同时检查是否启用了过多的驱动功能，导致软件运行负载过大"
+        },
+        {
+            "subject_name": "内部软件超时",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "驱动系统硬件异常",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "硬件故障树以“驱动系统硬件异常”为顶事件"
+        },
+        {
+            "subject_name": "组件属性异常",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "检查组件是否损坏",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "若组件属性仍异常，需检查组件是否损坏"
+        },
+        {
+            "subject_name": "组件损坏",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "更换对应组件",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "必要时更换对应组件"
+        },
+        {
+            "subject_name": "写RAM失败",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "调整内部RAM上系统日志的文件大小",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "针对F01020（写RAM失败）故障，需调整内部RAM上系统日志的文件大小"
+        },
+        {
+            "subject_name": "调整后仍无法解决",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "检查RAM芯片的连接状态",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "若调整后仍无法解决，需检查RAM芯片的连接状态"
+        },
+        {
+            "subject_name": "RAM芯片接触不良或芯片损坏",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "更换控制单元主板",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "排查是否存在接触不良或芯片损坏，必要时更换控制单元主板"
+        },
+        {
+            "subject_name": "内部软件超时",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "重新为所有组件上电",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "针对F01023（内部软件超时）故障，需重新为所有组件上电"
+        },
+        {
+            "subject_name": "瞬时电压波动",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "内部软件超时",
+            "object_type": "TopEvent",
+            "confidence": 0.9,
+            "source": "排查是否为瞬时电压波动导致"
+        },
+        {
+            "subject_name": "启用过多驱动功能",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "内部软件超时",
+            "object_type": "TopEvent",
+            "confidence": 0.9,
+            "source": "同时检查是否启用了过多的驱动功能，导致软件运行负载过大"
+        },
+        {
+            "subject_name": "固件版本过旧",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "内部软件超时",
+            "object_type": "TopEvent",
+            "confidence": 0.9,
+            "source": "若故障频繁出现，需将固件升级至最新版本"
+        },
+        {
+            "subject_name": "风扇使用寿命到期",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "更换控制单元的风扇",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "针对A01013（风扇使用寿命到期）故障，需及时更换控制单元的风扇"
+        },
+        {
+            "subject_name": "风扇型号不匹配",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "散热能力不符合要求",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "更换过程中需注意风扇的型号匹配，确保散热能力符合控制单元的工作要求"
+        },
+        {
+            "subject_name": "散热通道堵塞",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "散热不良",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "同时检查控制单元的散热通道是否堵塞，清理灰尘及杂物"
+        },
+        {
+            "subject_name": "散热不良",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "二次故障",
+            "object_type": "TopEvent",
+            "confidence": 0.9,
+            "source": "避免因散热不良导致二次故障"
+        },
+        {
+            "subject_name": "固件被修改",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "恢复出厂设置",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "针对A01016（固件被修改）故障，需在写入固件的非易失性存储器上恢复出厂设置"
+        },
+        {
+            "subject_name": "固件文件损坏",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "从官方渠道获取匹配型号的固件",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "若固件文件损坏，需从官方渠道获取匹配型号的固件"
+        },
+        {
+            "subject_name": "存储器损坏",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "更换存储卡或设备存储器",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "同时检查存储器是否存在损坏，必要时更换存储卡或设备存储器"
+        },
+        {
+            "subject_name": "组件列表被更改",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "恢复出错文件",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "针对A01017（组件列表被更改）故障，需将存储卡上的出错文件恢复为出厂设置"
+        },
+        {
+            "subject_name": "存储卡损坏",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "格式化存储卡",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "若无法恢复，需格式化存储卡后重新加载配置及固件"
+        },
+        {
+            "subject_name": "需要存储所有参数",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "执行完整的参数备份操作",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "针对A01032（需要存储所有参数）故障，需执行完整的参数备份操作"
+        },
+        {
+            "subject_name": "未执行完整备份",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "部分驱动对象的参数无法载入",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "若未执行完整备份，下次启动时部分驱动对象的参数可能无法载入"
+        },
+        {
+            "subject_name": "控制单元（CU）内部软件错误",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "SI P1（CU）：内部软件错误（安全功能相关）",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "故障现象为SI P1（CU）：内部软件错误（安全功能相关）"
+        },
+        {
+            "subject_name": "安全监控通道发现一处故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "SI P1（CU）：必须进行验收测试",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "故障现象为SI P1（CU）：必须进行验收测试"
+        },
+        {
+            "subject_name": "热启动导致同步失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全时间片同步失败",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "故障现象为SI P1（CU）：安全时间片同步失败"
+        },
+        {
+            "subject_name": "PROFIBUS主站同步故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全时间片同步失败",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "故障现象为SI P1（CU）：安全时间片同步失败"
+        },
+        {
+            "subject_name": "组件的连接、损坏、配置不当",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "对应故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "组件的连接、损坏、配置不当均会触发对应故障"
+        },
+        {
+            "subject_name": "参数取值不一致或错误",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "安全类及制动类故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "参数取值不一致或错误会触发安全类及制动类故障"
+        },
+        {
+            "subject_name": "接⼝松动、接线错误",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "信号传输异常",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "接口松动、接线错误会导致信号传输异常"
+        },
+        {
+            "subject_name": "交叉比较数据编号不一致",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "组合故障路径1",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为1~999（交叉比较数据编号），需检查对应交叉比较数据的参数设置"
+        },
+        {
+            "subject_name": "两个监控通道的参数一致",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "组合故障路径1",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "确保两个监控通道的参数一致，重新为所有组件上电，升级电机模块及控制单元的软件"
+        },
+        {
+            "subject_name": "组合故障路径1",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "F01600（SI CU:STOP A被触发）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01600（SI CU:STOP A被触发）故障，需先根据故障值r0949判断故障类型"
+        },
+        {
+            "subject_name": "控制定时器届满",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01600（SI CU:STOP A被触发）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为1000（控制定时器届满），需检查电机模块EP端子的布线，排查接触问题"
+        },
+        {
+            "subject_name": "PROFIsafe控制故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01600（SI CU:STOP A被触发）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为6000~6999（PROFIsafe控制故障），需检查PROFIsafe参数配置"
+        },
+        {
+            "subject_name": "STO状态不一致",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01611（A）（监控通道故障）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为2000~2003（STO状态不一致），需检查F-DI的连接"
+        },
+        {
+            "subject_name": "F-DI切换的公差时间不合适",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01612（并联功率单元STO输入不同）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01612（并联功率单元STO输入不同）故障，需检查F-DI切换的公差时间"
+        },
+        {
+            "subject_name": "打开制动过程出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01630（制动控制出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为10、11（打开制动过程出错），需检查参数p1278的设置"
+        },
+        {
+            "subject_name": "制动绕组短路",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01630（制动控制出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为20（制动绕组短路），需更换制动绕组或电机模块"
+        },
+        {
+            "subject_name": "闭合制动过程出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01630（制动控制出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为30、31（闭合制动过程出错），需检查制动装置的功能"
+        },
+        {
+            "subject_name": "控制单元制动控制故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01630（制动控制出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为50（控制单元制动控制故障），需检查控制单元与电机模块间的DRIVE-CLiQ通讯"
+        },
+        {
+            "subject_name": "打开断流阀过程出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01632（断流阀控制/反馈出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为10、11（打开断流阀过程出错），需检查断流阀的连接"
+        },
+        {
+            "subject_name": "断流阀已打开状态出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01632（断流阀控制/反馈出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为20（断流阀已打开状态出错），需检查断流阀是否损坏"
+        },
+        {
+            "subject_name": "闭合断流阀过程出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01632（断流阀控制/反馈出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为30、31（闭合断流阀过程出错），需检查断流阀的机械结构"
+        },
+        {
+            "subject_name": "控制/反馈或通讯故障",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01632（断流阀控制/反馈出错）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "若故障值为50、80（控制/反馈或通讯故障），需检查电柜结构及电缆敷设是否符合EMC准则"
+        },
+        {
+            "subject_name": "电机抱闸配置参数p1215及SBC使能参数p9602/p9802不匹配",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "A01631（电机抱闸/SBC配置无意义）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对A01631（电机抱闸/SBC配置无意义）故障，需检查电机抱闸配置参数p1215及SBC使能参数p9602/p9802"
+        },
+        {
+            "subject_name": "组件更换未应答/保存",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01640（组件更换需应答/保存）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01640（组件更换需应答/保存）故障，需先根据故障值r0949（二进制）判断更换的组件类型"
+        },
+        {
+            "subject_name": "组件更换未保存",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01641（组件更换需保存）",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01641（组件更换需保存）故障，处理流程与F01640类似，重点执行参数保存操作"
+        },
+        {
+            "subject_name": "组件更换需应答/保存",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "判断更换的组件类型",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "（组件更换需应答/保存）故障，需先根据故障值r0949（⼆进制）判断更换的组件类型"
+        },
+        {
+            "subject_name": "判断更换的组件类型",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "执行组件更换应答操作",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "然后执⾏组件更换应答操作（p9702=29），保存所有参数（p0977=1或p0971=1或“从RAM复制到ROM”）"
+        },
+        {
+            "subject_name": "执行组件更换应答操作",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "保存所有参数",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "然后执⾏组件更换应答操作（p9702=29），保存所有参数（p0977=1或p0971=1或“从RAM复制到ROM”）"
+        },
+        {
+            "subject_name": "保存所有参数",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "应答故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "最后应答故障（如通过⼆进制互联输⼊p2103）"
+        },
+        {
+            "subject_name": "控制单元更换",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "重新执行安全功能调试及验收测试",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若为控制单元更换，需重新执⾏安全功 能调试及验收测试"
+        },
+        {
+            "subject_name": "电机模块/液压模块更换",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "检查组件的固件版本并重新加载配置参数",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若为电机模块/液压模块更换，需检查组件的固件版本，确保与控制单元匹配，重新加载配置参数"
+        },
+        {
+            "subject_name": "组件更换需保存",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "参数保存操作",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "针对F01641（组件更换需保存）故障，处理流程与F01640类似，重点执⾏参数保存操作"
+        },
+        {
+            "subject_name": "参数保存操作",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "确保更换组件后的参数被正确存储",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "确保更换组 件后的参数被正确存储，避免下次启动时参数丢失"
+        },
+        {
+            "subject_name": "安全功能内部软件错误",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "重新为所有组件上电",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "针对F01649（安全功能内部软件错误）故障，需重新为所有组件上电"
+        },
+        {
+            "subject_name": "重新为所有组件上电",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "重复Safety Integrated功能的调试并执行上电",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "重复“Safety Integrated”功能的调试并执⾏上电"
+        },
+        {
+            "subject_name": "重复Safety Integrated功能的调试并执行上电",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "将功率单元的固件升级至最新版本",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "将功率单元的固件升级⾄最新版本"
+        },
+        {
+            "subject_name": "必须进行验收测试",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "根据故障值r0949判断具体原因",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "针对F01650（必须进⾏验收测试）故障，需根据故障值r0949判断具体原因"
+        },
+        {
+            "subject_name": "根据故障值r0949判断具体原因",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "重新执行安全功能调试",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为130（⽆监控通道2安全参数），需重新执⾏安全功能调试"
+        },
+        {
+            "subject_name": "根据故障值r0949判断具体原因",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "检查p9799、p9899参数",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为1000、2000（校验和不⼀致），需检查p9799、p9899参数"
+        },
+        {
+            "subject_name": "根据故障值r0949判断具体原因",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "执行验收测试并完成验收报告",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为2003、2004、2005、3003、3005（参数或硬件更改），需执⾏验收测试并完成验收报告"
+        },
+        {
+            "subject_name": "根据故障值r0949判断具体原因",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "诊断并排除其他SI故障",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为9999（其他安全故障后续反应），需先诊断并排除其他SI故障"
+        },
+        {
+            "subject_name": "安全时间片同步失败",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "根据故障值r0949判断具体原因",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "针对F01651（安全时间⽚同步失败）故障，需根据故障值r0949判断具体原因"
+        },
+        {
+            "subject_name": "根据故障值r0949判断具体原因",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "重新给上级控制系统和通用型上电",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为121（热启 动导致），需重新给上级控制系统和通⽤型上电（热启动）"
+        },
+        {
+            "subject_name": "根据故障值r0949判断具体原因",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "检查p9510参数设置",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "若故障值为150（PROFIBUS主站同步故 障），需检查p9510参数设置"
+        },
+        {
+            "subject_name": "单位转换：参考值更改后参数值计算失败",
+            "subject_type": "TopEvent",
+            "relation": "resultsIn",
+            "object_name": "检查故障值r0949对应的参考参数",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "针对F01033（单位转换：参考参数⽆效）故障，需检查故障值r0949对应的参考参数"
+        },
+        {
+            "subject_name": "检查故障值r0949对应的参考参数",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "确保该参数取值不为0.0",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "确保该参数取值不为0.0"
+        },
+        {
+            "subject_name": "确保该参数取值不为0.0",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "调整参数值",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "根据实际电机及⼯艺需求调整 参数值"
+        },
+        {
+            "subject_name": "调整参数值",
+            "subject_type": "IntermediateEvent",
+            "relation": "resultsIn",
+            "object_name": "检查单位制相关参数",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.98,
+            "source": "同时检查p0349、p005、p0595参数（单位制相关），确保单位制配置一致"
+        },
+        {
+            "subject_name": "参数设置错误或分配不当",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "编码器信号处理异常",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "参数设置错误或分配不当会导致编码器信号处理异常、单位转换失败。"
+        },
+        {
+            "subject_name": "参数设置错误或分配不当",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "单位转换失败",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.9,
+            "source": "参数设置错误或分配不当会导致编码器信号处理异常、单位转换失败。"
+        },
+        {
+            "subject_name": "接⼝松动",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "编码器信号错误或丢失",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "接⼝松动、信号⼲扰会导致编码器信号错误或丢失。"
+        },
+        {
+            "subject_name": "信号⼲扰",
+            "subject_type": "BasicEvent",
+            "relation": "jointly_resultsIn",
+            "object_name": "编码器信号错误或丢失",
+            "object_type": "IntermediateEvent",
+            "confidence": 0.95,
+            "source": "接⼝松动、信号⼲扰会导致编码器信号错误或丢失。"
+        },
+        {
+            "subject_name": "参考参数无效",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01033故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01033（单位转换：参考参数⽆效）故障，需检查故障值r0949对应的参考参数"
+        },
+        {
+            "subject_name": "参考值更改后参数值计算失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01034故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01034（单位转换：参考值更改后参数值计算失败）故障，需检查故障值r0949对应的参数"
+        },
+        {
+            "subject_name": "驱动类型不明",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01010故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01010（驱动类型不明）故障，需根据故障值r0949对应的驱动对象序号"
+        },
+        {
+            "subject_name": "编码器模块固件下载失败",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01005故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01005（编码器模块固件下载失败）故障，需根据故障值r0949的xxxx部分采取对应措施"
+        },
+        {
+            "subject_name": "编码器模块固件需升级",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "A01006故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对A01006（编码器模块固件需升级）故障，需通过调试⼯具或参数执⾏固件升级"
+        },
+        {
+            "subject_name": "编码器模块需重新上电",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "A01007故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对A01007（编码器模块需重新上电）故障，需根据报警值r2124对应的组件号"
+        },
+        {
+            "subject_name": "项⽬转化出错",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01012故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01012（N）（项⽬转化出错）故障，需重点检查故障值r0949对应的参数号"
+        },
+        {
+            "subject_name": "控制单元过热",
+            "subject_type": "BasicEvent",
+            "relation": "resultsIn",
+            "object_name": "F01009故障",
+            "object_type": "TopEvent",
+            "confidence": 0.98,
+            "source": "针对F01009（N）（控制单元过热）故障，需检查控制单元的送⻛情况"
+        }
+    ]
+}
