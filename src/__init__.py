@@ -7,7 +7,7 @@
 
 from .schemas import Triplet, TripletExtractionResult
 from .preprocessor import DataPreprocessor
-from .llm_extractor import QwenExtractor
+from .llm_extractor import DsExtractor
 from .llm_evaluator import QwenEvaluator
 from .parser import parse_response, parse_response_with_validation, parse_triplets
 
@@ -15,7 +15,7 @@ __all__ = [
     "Triplet",
     "TripletExtractionResult",
     "DataPreprocessor",
-    "QwenExtractor",
+    "DsExtractor",
     "QwenEvaluator",
     "parse_response",
     "parse_response_with_validation",

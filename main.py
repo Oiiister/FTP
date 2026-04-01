@@ -1,26 +1,47 @@
 import os
 import json
 import argparse
+import time
 from dotenv import load_dotenv
 
-# 加载环境变量 (需要有一个包含 DASHSCOPE_API_KEY 的 .env 文件)
+# 加载环境变量
 load_dotenv()
 
 from src.preprocessor import DataPreprocessor
-from src.llm_extractor import QwenExtractor
-from src.schemas import TripletExtractionResult
-from pydantic import ValidationError
+from src.llm_extractor import DsExtractor
+
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "data", "output")
+
+
+def get_versioned_output_path(output_dir: str, input_filename: str) -> str:
+    base_name = os.path.splitext(os.path.basename(input_filename))[0]
+    prefix = f"{base_name}_triplets_v"
+    suffix = ".json"
+    latest_version = 0
+
+    for existing_name in os.listdir(output_dir):
+        if not existing_name.startswith(prefix) or not existing_name.endswith(suffix):
+            continue
+
+        version_text = existing_name[len(prefix):-len(suffix)]
+        if version_text.isdigit():
+            latest_version = max(latest_version, int(version_text))
+
+    next_version = latest_version + 1
+    return os.path.join(output_dir, f"{base_name}_triplets_v{next_version}.json")
 
 
 def main(input_path: str = "data/input"):
-    if not os.getenv("DASHSCOPE_API_KEY"):
-        raise EnvironmentError("未检测到 DASHSCOPE_API_KEY，请检查项目根目录下的 .env 文件或当前环境变量配置")
+    if not os.getenv("SILICONFLOW_API_KEY"):
+        raise EnvironmentError("未检测到 SILICONFLOW_API_KEY，请检查项目根目录下的 .env 文件或当前环境变量配置")
 
-    output_dir = "data/output"
+    output_dir = OUTPUT_DIR
     os.makedirs(output_dir, exist_ok=True)
 
     preprocessor = DataPreprocessor()
-    extractor = QwenExtractor()
+    extractor = DsExtractor()
 
     if os.path.isfile(input_path):
         files_to_process = [input_path]
@@ -37,25 +58,26 @@ def main(input_path: str = "data/input"):
         filename = os.path.basename(file_path)
         print(f"正在处理文件: {filename}")
         try:
-            # 1. 预处理提取文本
+            print("步骤1：预处理，提取文本内容")
+            step_start = time.perf_counter()
             text = preprocessor.process_file(file_path)
+            print(f"文本提取完成，耗时：{round(time.perf_counter() - step_start)}s")
 
-            # 2. 调用模型进行抽取
+            print("步骤2：LLM抽取，调用：DeepSeek V3.2抽取")
+            step_start = time.perf_counter()
             json_result = extractor.extract(text, source_reference=filename)
+            print(f"抽取完成，耗时：{round(time.perf_counter() - step_start)}s")
 
-            # 3. 校验并解析 JSON
             parsed_data = json.loads(json_result)
-            validated_data = TripletExtractionResult(**parsed_data)
 
-            # 4. 保存为标准 JSON 文件
-            output_file = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}_triplets.json")
+            print("步骤3：保存抽取结果")
+
+            output_file = get_versioned_output_path(output_dir, filename)
             with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(validated_data.model_dump_json(indent=4))
+                json.dump(parsed_data, f, ensure_ascii=False, indent=4)
 
             print(f"成功保存提取结果至: {output_file}\n")
 
-        except ValidationError as e:
-            print(f"文件 {filename} 抽取的数据不符合Schema规范:\n{e}\n")
         except Exception as e:
             print(f"处理文件 {filename} 时发生错误: {e}\n")
 

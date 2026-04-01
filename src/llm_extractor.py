@@ -1,20 +1,28 @@
 import os
-import json
-import dashscope
+from openai import OpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 
-class QwenExtractor:
-    def __init__(self):
-        api_key = os.getenv("DASHSCOPE_API_KEY")
+class DsExtractor:
+    def __init__(
+        self,
+        model: str = "Pro/deepseek-ai/DeepSeek-V3.2",
+        base_url: str = "https://api.siliconflow.cn/v1",
+        api_key_env: str = "SILICONFLOW_API_KEY",
+        temperature: float = 0.2,
+        max_tokens: int = 4096,
+        timeout: int = 180,
+    ):
+        api_key = os.getenv(api_key_env)
         if not api_key:
-            raise ValueError("未检测到 DASHSCOPE_API_KEY，请检查 .env 是否已正确加载")
+            raise ValueError(f"未检测到 {api_key_env}，请检查 .env 是否已正确加载")
 
-        dashscope.api_key = api_key
-        self.model = "qwen-max"
-        self.long_text_threshold = 5000
-        self.chunk_size = 3000
-        self.chunk_overlap = 300
+        self.client = OpenAI(api_key=api_key, base_url=base_url, timeout=timeout)
+        self.model = model
+        self.base_url = base_url
+        self.api_key_env = api_key_env
+        self.temperature = temperature
+        self.max_tokens = max_tokens
         # 深度优化的 System Prompt
         self.system_prompt = """
         你是一个精通故障树分析（FTA）的专家。你的任务是从技术文本中抽取出严谨的故障三元组。
@@ -93,152 +101,27 @@ class QwenExtractor:
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
     def _extract_once(self, text: str, source_reference: str) -> str:
-        # 在 User Prompt 中明确强调来源标记，防止模型瞎编 source
         user_prompt = f"""请提取以下文本中的三元组。来源标记请统一使用：'{source_reference}'。
 
 文本内容：
 {text}"""
 
-        response = dashscope.Generation.call(
+        response = self.client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": user_prompt}
+                {"role": "user", "content": user_prompt},
             ],
-            result_format='message',
-            response_format={"type": "json_object"}
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            response_format={"type": "json_object"},
         )
 
-        if response.status_code == 200:
-            return response.output.choices[0].message.content
-        else:
-            raise Exception(f"API调用失败: {response.code} - {response.message}")
-
-    def _split_text(self, text: str) -> list[str]:
-        """按段落优先切分长文本，保留少量重叠以减少跨段信息丢失。"""
-        if len(text) <= self.chunk_size:
-            return [text]
-
-        paragraphs = [p for p in text.split("\n") if p.strip()]
-        chunks = []
-        current = ""
-
-        for para in paragraphs:
-            candidate = f"{current}\n{para}" if current else para
-            if len(candidate) <= self.chunk_size:
-                current = candidate
-                continue
-
-            if current:
-                chunks.append(current)
-                overlap = current[-self.chunk_overlap:] if len(current) > self.chunk_overlap else current
-                current = f"{overlap}\n{para}"
-            else:
-                # 单段过长时硬切分
-                for i in range(0, len(para), self.chunk_size - self.chunk_overlap):
-                    piece = para[i:i + self.chunk_size]
-                    if piece.strip():
-                        chunks.append(piece)
-                current = ""
-
-        if current.strip():
-            chunks.append(current)
-
-        return chunks
-
-    def _safe_parse_triplets(self, raw_json: str) -> list[dict]:
-        """尽量从模型返回中解析 triplets 列表，失败时返回空列表。"""
-        try:
-            data = json.loads(raw_json)
-            triplets = data.get("triplets", [])
-            if isinstance(triplets, list):
-                return [t for t in triplets if isinstance(t, dict)]
-            return []
-        except Exception:
-            return []
-
-    def _deduplicate_triplets(self, triplets: list[dict]) -> list[dict]:
-        """基于核心语义字段去重，避免分块结果重复。"""
-        seen = set()
-        result = []
-        for t in triplets:
-            key = (
-                t.get("subject_name", "").strip(),
-                t.get("subject_type", "").strip(),
-                t.get("relation", "").strip(),
-                t.get("object_name", "").strip(),
-                t.get("object_type", "").strip(),
-            )
-            if key in seen:
-                continue
-            seen.add(key)
-            result.append(t)
-        return result
-
-    def _merge_triplets_globally(self, text: str, source_reference: str, triplets: list[dict]) -> str:
-        """第二阶段全局合并：跨分块重建链路、补全中间层并统一命名。"""
-        merge_prompt = (
-            "你将看到同一文档不同片段抽取出的故障三元组候选。"
-            "请进行全局融合，重点执行："
-            "1) 跨上下文拼接完整因果链；"
-            "2) 补全可证据支持的中间层 IntermediateEvent；"
-            "3) 去重并统一同义命名（但不要误合并上下游事件）；"
-            "4) 保留 OR/AND 逻辑正确性。"
-            "只输出 JSON，格式为 {\"triplets\": [...]}。"
-        )
-
-        user_prompt = f"""来源标记统一使用：'{source_reference}'。
-
-【原始文本（用于全局理解）】
-{text[:6000]}
-
-【分块候选三元组】
-{json.dumps(triplets, ensure_ascii=False, indent=2)}
-"""
-
-        response = dashscope.Generation.call(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": merge_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            result_format='message',
-            response_format={"type": "json_object"}
-        )
-
-        if response.status_code == 200:
-            return response.output.choices[0].message.content
-        raise Exception(f"全局融合失败: {response.code} - {response.message}")
+        content = response.choices[0].message.content
+        if not content:
+            raise ValueError("抽取模型返回空响应")
+        return content
 
     def extract(self, text: str, source_reference: str) -> str:
-        """短文本直接抽取；长文本采用“分块抽取 + 全局融合”两阶段策略。"""
-        if len(text) <= self.long_text_threshold:
-            return self._extract_once(text, source_reference)
-
-        chunks = self._split_text(text)
-        all_triplets = []
-
-        for idx, chunk in enumerate(chunks, 1):
-            chunk_source = f"{source_reference} | chunk {idx}/{len(chunks)}"
-            raw = self._extract_once(chunk, chunk_source)
-            parsed = self._safe_parse_triplets(raw)
-            all_triplets.extend(parsed)
-
-        all_triplets = self._deduplicate_triplets(all_triplets)
-
-        # 若分块阶段无结果，返回空结构，避免后续异常。
-        if not all_triplets:
-            return json.dumps({"triplets": []}, ensure_ascii=False)
-
-        try:
-            merged_raw = self._merge_triplets_globally(text, source_reference, all_triplets)
-            merged_triplets = self._safe_parse_triplets(merged_raw)
-        except Exception as e:
-            print(f"[Extractor] 全局融合失败（{type(e).__name__}: {e}），降级使用分块去重结果")
-            merged_triplets = []
-
-        # 全局融合失败时兜底返回分块去重结果。
-        if not merged_triplets:
-            return json.dumps({"triplets": all_triplets}, ensure_ascii=False)
-
-        return json.dumps({"triplets": self._deduplicate_triplets(merged_triplets)}, ensure_ascii=False)
+        """直接对完整文本执行一次抽取。"""
+        return self._extract_once(text, source_reference)

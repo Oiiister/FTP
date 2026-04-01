@@ -1,6 +1,6 @@
 # FTP — 故障树三元组提取工具
 
-基于大语言模型（阿里云 Qwen）的故障因果三元组自动提取工具，支持 TXT、PDF、图片等格式的技术文档输入，输出结构化的故障树三元组 JSON 文件。
+基于硅基流动平台调用 DeepSeek 大模型的故障因果三元组自动提取工具，使用 OpenAI Python SDK 访问兼容接口，支持 TXT、PDF、图片等格式的技术文档输入，输出结构化的故障树三元组 JSON 文件。
 
 ---
 
@@ -10,7 +10,7 @@
 |---|---|
 | Python | 3.9+ |
 | Tesseract OCR | 图片文件识别所需（PDF/TXT 可不安装） |
-| DashScope API Key | 阿里云百炼平台申请 |
+| SiliconFlow API Key | 硅基流动平台申请 |
 
 ---
 
@@ -30,8 +30,8 @@ pip install -r requirements.txt
 
 | 包名 | 用途 |
 |---|---|
-| `dashscope` | 调用阿里云 Qwen 大模型 API |
-| `pydantic` | 输出结构验证 |
+| `openai` | 通过 OpenAI SDK 调用硅基流动兼容接口 |
+| `pydantic` | 输出结构定义与可选校验 |
 | `python-dotenv` | 加载 `.env` 环境变量 |
 | `pdfplumber` | PDF 文本提取 |
 | `pytesseract` | 图片 OCR 识别 |
@@ -56,10 +56,10 @@ sudo apt install tesseract-ocr tesseract-ocr-chi-sim
 在项目根目录创建 `.env` 文件，填入 API Key：
 
 ```
-DASHSCOPE_API_KEY=your_api_key_here
+SILICONFLOW_API_KEY=your_api_key_here
 ```
 
-> 在 [阿里云百炼平台](https://bailian.console.aliyun.com/) 注册并获取 API Key。
+> 在硅基流动平台申请并获取 API Key。
 
 ---
 
@@ -69,6 +69,7 @@ DASHSCOPE_API_KEY=your_api_key_here
 
 ```bash
 python main.py --input-path data/input/your_file.pdf
+例如：python main.py --input-path /Users/oyster/PycharmProjects/FTP/data/input/test1.txt
 ```
 
 ### 处理整个目录（批量）
@@ -85,10 +86,18 @@ python main.py
 
 ### 输出结果
 
-提取结果保存在 `data/output/` 目录下，文件名格式为 `{原文件名}_triplets.json`，例如：
+提取结果统一保存在 `/Users/oyster/PycharmProjects/FTP/data/output/` 目录下。
+
+为避免覆盖历史结果：
+
+- 不同输入文件会使用不同文件名前缀
+- 同一输入文件的多次抽取会自动追加版本号
+
+文件名格式为 `{原文件名}_triplets_v{版本号}.json`，例如：
 
 ```
-data/output/test2_triplets.json
+/Users/oyster/PycharmProjects/FTP/data/output/test2_triplets_v1.json
+/Users/oyster/PycharmProjects/FTP/data/output/test2_triplets_v2.json
 ```
 
 ---
@@ -134,8 +143,14 @@ FTP/
 │   ├── input/               # 输入文档（TXT / PDF / 图片）
 │   └── output/              # 提取结果 JSON
 └── src/
-    ├── llm_extractor.py     # LLM 提取逻辑（分块 + 全局合并）
+  ├── llm_extractor.py     # 基于 OpenAI SDK 的 LLM 提取逻辑（直接整文抽取）
     ├── preprocessor.py      # 文档预处理（文本 / PDF / 图片）
-    ├── schemas.py           # 输出结构 Schema（Pydantic）
+  ├── schemas.py           # 输出结构定义（Pydantic）
     └── parser.py            # 辅助解析
 ```
+
+CFY注：
+1.保留了关于双Agent的框架：
+llm_evaluator.py,LangGraphExtractor.ipynb,test_langgraph_extractor.py
+
+2.注意：preprocessor.py是文本预处理部分，后续需要融合多模态。将多模态处理功能融合进def process_file(file_path: str) -> str:函数，防止破坏项目结构。

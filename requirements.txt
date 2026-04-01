@@ -1,4 +1,4 @@
-dashscope
+openai
 pydantic
 python-dotenv
 pdfplumber

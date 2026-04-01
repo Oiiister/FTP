@@ -23,12 +23,5 @@ dist/
 build/
 *.egg
 
-# 环境变量
-.env
-
-# 输出数据（可按需调整）
-data/output/
-src/results.json
-
 # Jupyter 检查点
 .ipynb_checkpoints/

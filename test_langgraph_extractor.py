@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 try:
     from langgraph.graph import StateGraph, END
     from src.parser import parse_response
-    from src.llm_extractor import QwenExtractor
+    from src.llm_extractor import DsExtractor
     from src.llm_evaluator import QwenEvaluator
 except ImportError as e:
     print(f"导入错误: {e}")
@@ -64,7 +64,7 @@ def extractor_node(state: Dict[str, Any]) -> Dict[str, Any]:
     print(f"\n=== 第 {iteration_count + 1} 轮抽取 ===")
     
     # 实例化抽取器
-    extractor = QwenExtractor()
+    extractor = DsExtractor()
 
     # 构造动态 Prompt
     feedback_text = ""

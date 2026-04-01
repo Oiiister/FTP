@@ -1,12 +1,29 @@
 import os
 import json
-import dashscope
+from openai import OpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 
 class QwenEvaluator:
-    def __init__(self):
-        self.model = "qwen-max"  # 建议使用逻辑能力最强的模型
+    def __init__(
+        self,
+        model: str = "deepseek-ai/DeepSeek-R1",
+        base_url: str = "https://api.siliconflow.cn/v1",
+        api_key_env: str = "SILICONFLOW_API_KEY",
+        temperature: float = 0.1,
+        max_tokens: int = 4096,
+        timeout: int = 180,
+    ):
+        api_key = os.getenv(api_key_env)
+        if not api_key:
+            raise ValueError(f"未检测到 {api_key_env}，请检查 .env 是否已正确加载")
+
+        self.client = OpenAI(api_key=api_key, base_url=base_url, timeout=timeout)
+        self.model = model
+        self.base_url = base_url
+        self.api_key_env = api_key_env
+        self.temperature = temperature
+        self.max_tokens = max_tokens
         self.system_prompt = """
         你是一个精通故障树分析（FTA）的逻辑审计专家。你的任务是对比【原始文本】和【提取出的三元组】，找出逻辑矛盾或缺失。
 
@@ -52,6 +69,21 @@ class QwenEvaluator:
                 - "advice": 给提取器的修正建议。仅当 `severity=strong` 时给出“应统一为 XXX”的强制建议。
         """
 
+    def _normalize_json_output(self, content: str) -> str:
+        """兼容推理模型可能返回的 Markdown 代码块或额外解释。"""
+        cleaned = content.strip()
+        if cleaned.startswith("```"):
+            cleaned = cleaned.strip("`")
+            if cleaned.startswith("json"):
+                cleaned = cleaned[4:].strip()
+
+        start = cleaned.find("{")
+        end = cleaned.rfind("}")
+        if start == -1 or end == -1 or end < start:
+            raise ValueError("评估模型未返回有效 JSON")
+
+        return cleaned[start:end + 1]
+
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
     def evaluate(self, text: str, triplets: list) -> str:
         # 将当前的三元组转为字符串方便模型阅读
@@ -74,17 +106,17 @@ class QwenEvaluator:
         {triplets_str}
         """
 
-        response = dashscope.Generation.call(
+        response = self.client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": user_prompt}
+                {"role": "user", "content": user_prompt},
             ],
-            result_format='message',
-            response_format={"type": "json_object"}
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
         )
 
-        if response.status_code == 200:
-            return response.output.choices[0].message.content
-        else:
-            raise Exception(f"审计模型调用失败: {response.message}")
+        content = response.choices[0].message.content
+        if not content:
+            raise ValueError("评估模型返回空响应")
+        return self._normalize_json_output(content)
