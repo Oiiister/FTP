@@ -1,6 +1,6 @@
 # FTP — 故障树三元组提取工具
 
-基于大语言模型（阿里云 Qwen）的故障因果三元组自动提取工具，支持 TXT、PDF、图片等格式的技术文档输入，输出结构化的故障树三元组 JSON 文件。
+基于大语言模型（DeepSeek）的故障因果三元组自动提取工具，支持 TXT、PDF、图片等格式的技术文档输入，输出结构化的故障树三元组 JSON 文件。
 
 ---
 
@@ -10,7 +10,7 @@
 |---|---|
 | Python | 3.9+ |
 | Tesseract OCR | 图片文件识别所需（PDF/TXT 可不安装） |
-| DashScope API Key | 阿里云百炼平台申请 |
+| DeepSeek API Key | DeepSeek 开放平台申请 |
 
 ---
 
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 | 包名 | 用途 |
 |---|---|
-| `dashscope` | 调用阿里云 Qwen 大模型 API |
+| `requests` | 调用 DeepSeek API |
 | `pydantic` | 输出结构验证 |
 | `python-dotenv` | 加载 `.env` 环境变量 |
 | `pdfplumber` | PDF 文本提取 |
@@ -56,10 +56,10 @@ sudo apt install tesseract-ocr tesseract-ocr-chi-sim
 在项目根目录创建 `.env` 文件，填入 API Key：
 
 ```
-DASHSCOPE_API_KEY=your_api_key_here
+DEEPSEEK_API_KEY=your_deepseek_api_key_here
 ```
 
-> 在 [阿里云百炼平台](https://bailian.console.aliyun.com/) 注册并获取 API Key。
+> 在 [DeepSeek 开放平台](https://platform.deepseek.com/) 创建并获取 API Key。
 
 ---
 
@@ -69,6 +69,12 @@ DASHSCOPE_API_KEY=your_api_key_here
 
 ```bash
 python main.py --input-path data/input/your_file.pdf
+```
+
+赛题场景建议显式传入顶事件，仅围绕该顶事件做全局合并：
+
+```bash
+python main.py --input-path data/input/your_file.pdf --top-event "系统宕机"
 ```
 
 ### 处理整个目录（批量）
@@ -81,6 +87,24 @@ python main.py --input-path data/input/
 
 ```bash
 python main.py
+```
+
+### 顶事件参数说明
+
+`--top-event` 为可选参数。设置后流程会先完成全量分块抽取，再在合并阶段仅保留可回溯到该顶事件的链路，减少合并输入规模和无关融合开销。
+
+### LightRAG 入库与查询
+
+直接跑“抽取 + 入库 + 查询”：
+
+```bash
+python main.py --input-path data/input/test2.txt --enable-lightrag --lightrag-query "导致系统宕机的关键组合路径是什么？" --lightrag-mode hybrid
+```
+
+如果只想入库不查：
+
+```bash
+python main.py --input-path data/input/test2.txt --enable-lightrag
 ```
 
 ### 输出结果

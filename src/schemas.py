@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from typing import List
+from typing import List, Dict, Any, Optional
 
 class Triplet(BaseModel):
     subject_name: str = Field(..., description="故障节点的具体名称，如 '气路压力不足'") # [cite: 4]
@@ -9,6 +9,7 @@ class Triplet(BaseModel):
     object_type: str = Field(..., description="故障节点的分类标签，如 'IntermediateEvent'") # [cite: 8]
     confidence: float = Field(..., description="该三元组的可信程度，取值范围 0~1") # [cite: 9]
     source: str = Field(..., description="该三元组的来源依据") # [cite: 10]
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="父子索引继承元数据")
 
     @validator('subject_type', 'object_type')
     def check_entity_type(cls, v):
@@ -26,3 +27,5 @@ class Triplet(BaseModel):
 
 class TripletExtractionResult(BaseModel):
     triplets: List[Triplet]
+    parent_child_index: Optional[Dict[str, Any]] = None
+    lightrag_graph: Optional[Dict[str, Any]] = None

@@ -1,4 +1,4 @@
-dashscope
+requests
 pydantic
 python-dotenv
 pdfplumber
@@ -6,3 +6,5 @@ pytesseract
 tenacity
 Pillow
 langgraph
+jieba
+lightrag
