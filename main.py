@@ -46,7 +46,11 @@ def main(
     enable_lightrag: bool = False,
     lightrag_working_dir: str = "data/lightrag",
     lightrag_query: Optional[str] = None,
-    lightrag_mode: str = "hybrid"
+    lightrag_mode: str = "hybrid",
+    enable_lightrag_refine: bool = False,
+    refine_hops: int = 2,
+    refine_parent_topk: int = 30,
+    refine_merge_policy: str = "balanced",
 ):
     start_time = time.time()
     print("=" * 60)
@@ -75,6 +79,11 @@ def main(
         print(f"🔍 LightRAG 查询模式：{lightrag_mode}")
         if lightrag_query:
             print(f"❓ LightRAG 查询语句：{lightrag_query}")
+        if enable_lightrag_refine:
+            print(
+                f"🎯 LightRAG 引导精抽已启用：hops={max(1, int(refine_hops))} "
+                f"parent_topk={max(1, int(refine_parent_topk))} policy={refine_merge_policy}"
+            )
 
     if os.path.isfile(input_path):
         files_to_process = [input_path]
@@ -139,12 +148,13 @@ def main(
             validated_data = TripletExtractionResult(**parsed_data)
             triplet_count = len(validated_data.triplets)
             print(f"✓ JSON 验证成功，共抽取 {triplet_count} 个三元组 (耗时：{time.time() - validate_start:.2f}s)")
+            output_payload = validated_data.model_dump(mode="json", exclude_none=True)
 
             lightrag_query_result = None
             if enable_lightrag and rag_engine is not None:
                 ingest_start = time.time()
                 ingest_stat = rag_engine.ingest_graph(
-                    validated_data.lightrag_graph or {},
+                    output_payload.get("lightrag_graph") or {},
                     source_reference=filename
                 )
                 print(
@@ -158,11 +168,66 @@ def main(
                         mode=lightrag_mode
                     )
                     print(f"✓ LightRAG 查询完成 (耗时：{time.time() - query_start:.2f}s)")
+                if enable_lightrag_refine:
+                    refine_start = time.time()
+                    refine_seed = (normalized_top_event or lightrag_query or "").strip()
+                    if refine_seed:
+                        subgraph = rag_engine.retrieve_subgraph(
+                            top_event=refine_seed,
+                            hops=max(1, int(refine_hops)),
+                            limit=max(1, int(refine_parent_topk))
+                        )
+                        candidate_parent_ids = rag_engine.collect_candidate_parent_ids(subgraph)
+                        candidate_parent_ids = candidate_parent_ids[: max(1, int(refine_parent_topk))]
+                        refined_triplets = extractor.refine_with_candidates(
+                            text=text_content,
+                            source_reference=filename,
+                            index_data=output_payload.get("parent_child_index") or {},
+                            candidate_parent_ids=candidate_parent_ids,
+                            top_event=normalized_top_event
+                        )
+                        merged_triplets, merge_stats = extractor.merge_with_refinement(
+                            base_triplets=output_payload.get("triplets") or [],
+                            refined_triplets=refined_triplets,
+                            index_data=output_payload.get("parent_child_index") or {},
+                            candidate_parent_ids=candidate_parent_ids,
+                            policy=refine_merge_policy
+                        )
+                        output_payload["triplets"] = merged_triplets
+                        output_payload["lightrag_graph"] = extractor._build_lightrag_graph(merged_triplets, filename)
+                        output_payload["retrieval_trace"] = subgraph
+                        output_payload["refine_stats"] = {
+                            **merge_stats,
+                            "enabled": True,
+                            "seed": refine_seed,
+                            "refine_hops": max(1, int(refine_hops)),
+                            "refine_parent_topk": max(1, int(refine_parent_topk)),
+                            "candidate_parent_ids": candidate_parent_ids,
+                            "latency_seconds": round(time.time() - refine_start, 4),
+                        }
+                        print(
+                            f"✓ LightRAG 引导精抽完成 (耗时：{time.time() - refine_start:.2f}s) "
+                            f"候选父块={len(candidate_parent_ids)} 融合后三元组={len(merged_triplets)}"
+                        )
+                    else:
+                        output_payload["retrieval_trace"] = {
+                            "nodes": [],
+                            "edges": [],
+                            "parent_ids": [],
+                            "retrieval_trace": [],
+                            "reason": "missing_refine_seed"
+                        }
+                        output_payload["refine_stats"] = {
+                            "enabled": True,
+                            "skipped": True,
+                            "reason": "top_event_and_lightrag_query_both_empty",
+                            "policy": (refine_merge_policy or "balanced").strip().lower() or "balanced"
+                        }
+                        print("⚠ LightRAG 引导精抽已启用，但未提供 top_event 或 lightrag_query，已跳过")
 
             print(f"\n[步骤 4/4] 保存：写入输出文件...")
             save_start = time.time()
             output_file = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}_triplets.json")
-            output_payload = validated_data.model_dump(mode="json")
             if lightrag_query_result is not None:
                 output_payload["lightrag_query"] = {
                     "question": lightrag_query,
@@ -229,6 +294,29 @@ if __name__ == "__main__":
         default="hybrid",
         help="LightRAG 查询模式，如 naive/local/global/hybrid",
     )
+    parser.add_argument(
+        "--enable-lightrag-refine",
+        action="store_true",
+        help="启用 LightRAG 图检索引导的二轮精抽流程",
+    )
+    parser.add_argument(
+        "--refine-hops",
+        type=int,
+        default=2,
+        help="图检索子图扩展跳数（多跳回溯）",
+    )
+    parser.add_argument(
+        "--refine-parent-topk",
+        type=int,
+        default=30,
+        help="参与二轮精抽的候选父块上限",
+    )
+    parser.add_argument(
+        "--refine-merge-policy",
+        choices=["strict", "balanced"],
+        default="balanced",
+        help="一轮与二轮融合策略：strict 或 balanced",
+    )
     args = parser.parse_args()
     threshold = max(0.0, min(1.0, float(args.semantic_merge_threshold)))
     main(
@@ -238,5 +326,9 @@ if __name__ == "__main__":
         enable_lightrag=bool(args.enable_lightrag),
         lightrag_working_dir=args.lightrag_working_dir,
         lightrag_query=args.lightrag_query,
-        lightrag_mode=args.lightrag_mode
+        lightrag_mode=args.lightrag_mode,
+        enable_lightrag_refine=bool(args.enable_lightrag_refine),
+        refine_hops=max(1, int(args.refine_hops)),
+        refine_parent_topk=max(1, int(args.refine_parent_topk)),
+        refine_merge_policy=args.refine_merge_policy,
     )

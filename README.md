@@ -93,19 +93,27 @@ python main.py
 
 `--top-event` 为可选参数。设置后流程会先完成全量分块抽取，再在合并阶段仅保留可回溯到该顶事件的链路，减少合并输入规模和无关融合开销。
 
-### LightRAG 入库与查询
 
-直接跑“抽取 + 入库 + 查询”：
+### LightRAG 图检索引导精抽
 
-```bash
-python main.py --input-path data/input/test2.txt --enable-lightrag --lightrag-query "导致系统宕机的关键组合路径是什么？" --lightrag-mode hybrid
-```
-
-如果只想入库不查：
+新增的“高召回+高精度”双阶段方案，可显著提升复杂因果链的抽取精度。
 
 ```bash
-python main.py --input-path data/input/test2.txt --enable-lightrag
+# 启用二轮精抽（balanced 策略，推荐）
+python main.py --input-path data/input/test2.txt --enable-lightrag --enable-lightrag-refine --top-event "驱动系统硬件异常"
+
+# 使用 strict 策略（仅保留图谱命中且证据充分的边）
+python main.py --input-path data/input/your_file.txt --enable-lightrag --enable-lightrag-refine --top-event "系统宕机" --refine-merge-policy strict
 ```
+
+**新增参数说明：**
+
+| 参数 | 说明 | 默认值 |
+|---|---|---|
+| `--enable-lightrag-refine` | 启用图检索引导的二轮精抽 | `False` |
+| `--refine-hops` | 图检索子图扩展跳数 | `2` |
+| `--refine-parent-topk` | 参与二轮精抽的候选父块上限 | `30` |
+| `--refine-merge-policy` | 一轮与二轮融合策略：`strict` 或 `balanced` | `balanced` |
 
 ### 输出结果
 

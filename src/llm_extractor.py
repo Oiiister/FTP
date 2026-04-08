@@ -4,10 +4,15 @@ import re
 import hashlib
 from collections import defaultdict
 from difflib import SequenceMatcher
-from typing import Optional
+from typing import Optional, Any
 import requests
 from tenacity import retry, stop_after_attempt, wait_exponential
 import time
+
+try:
+    import jieba as jieba_module
+except Exception:
+    jieba_module = None
 
 
 class DeepSeekExtractor:
@@ -33,6 +38,8 @@ class DeepSeekExtractor:
         self.parent_chunk_max = 1000
         # 父块重叠长度：避免跨块边界丢失关键参数或因果关系
         self.parent_chunk_overlap = 120
+        # section 标题仅在较短时才拼接进每个父块，避免过长标题挤占正文上下文
+        self.parent_section_prefix_max_tokens = 24
         # 子块最小长度：过滤过短、检索价值低的句子
         self.child_min_length = 15
         # 章节标题识别：匹配如“2.1.1 控制单元硬件故障数据”
@@ -133,11 +140,28 @@ class DeepSeekExtractor:
         return any(token in lowered for token in placeholders)
 
     def _load_jieba(self):
-        try:
-            import jieba
-            return jieba
-        except Exception:
-            return None
+        return jieba_module
+
+    def _estimate_token_count(self, text: str) -> int:
+        normalized = (text or "").strip()
+        if not normalized:
+            return 0
+        if self.jieba is not None:
+            return len([tok for tok in self.jieba.lcut(normalized) if tok and tok.strip()])
+        return len([tok for tok in re.split(r"\s+", normalized) if tok.strip()]) or len(normalized)
+
+    def _build_parent_chunk_text(self, section_title: str, parent_text: str) -> str:
+        normalized_parent = (parent_text or "").strip()
+        normalized_title = (section_title or "").strip()
+        if not normalized_parent:
+            return ""
+        if not normalized_title or normalized_title == "文档正文":
+            return normalized_parent
+        if self._estimate_token_count(normalized_title) > self.parent_section_prefix_max_tokens:
+            return normalized_parent
+        if normalized_parent.startswith(normalized_title):
+            return normalized_parent
+        return f"{normalized_title}\n{normalized_parent}"
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
     def _extract_once(self, text: str, source_reference: str) -> str:
@@ -367,7 +391,8 @@ class DeepSeekExtractor:
         for section in sections:
             section_title = section["title"]
             parent_texts = self._split_parent_chunks_from_section(section["text"])
-            for idx, parent_text in enumerate(parent_texts, 1):
+            for idx, raw_parent_text in enumerate(parent_texts, 1):
+                parent_text = self._build_parent_chunk_text(section_title, raw_parent_text)
                 parent_seed = f"{section_title}::{idx}::{(parent_text or '').strip()}"
                 parent_id = f"parent_{hashlib.md5(parent_seed.encode('utf-8')).hexdigest()[:12]}"
                 fault_codes = self._extract_fault_codes(parent_text)
@@ -1004,6 +1029,175 @@ class DeepSeekExtractor:
                 f.flush()
         except Exception:
             return
+
+    def _filter_index_by_parent_ids(self, index_data: dict, candidate_parent_ids: list[str]) -> tuple[list[dict], list[dict]]:
+        normalized_ids = {str(item).strip() for item in (candidate_parent_ids or []) if str(item).strip()}
+        parents = list(index_data.get("parents", []) or [])
+        children = list(index_data.get("children", []) or [])
+        if not normalized_ids:
+            return [], []
+        filtered_parents = [p for p in parents if str(p.get("parent_id", "") or "").strip() in normalized_ids]
+        filtered_children = []
+        for child in children:
+            if not isinstance(child, dict):
+                continue
+            metadata = child.get("metadata", {}) or {}
+            parent_id = str(metadata.get("parent_id", "") or "").strip()
+            if parent_id in normalized_ids:
+                filtered_children.append(child)
+        return filtered_parents, filtered_children
+
+    def _evidence_in_child_sentences(self, evidence_text: str, child_sentences: list[str]) -> bool:
+        evidence = (evidence_text or "").strip()
+        if not evidence:
+            return False
+        for sentence in child_sentences:
+            candidate = (sentence or "").strip()
+            if not candidate:
+                continue
+            if evidence == candidate or evidence in candidate or candidate in evidence:
+                return True
+            if SequenceMatcher(None, evidence, candidate).ratio() >= 0.82:
+                return True
+        return False
+
+    def _triplet_has_candidate_evidence(self, triplet: dict, candidate_children_map: dict[str, list[str]]) -> bool:
+        metadata = dict(triplet.get("metadata") or {})
+        parent_id = str(metadata.get("parent_id", "") or "").strip()
+        if not parent_id:
+            return False
+        child_sentences = candidate_children_map.get(parent_id, [])
+        if not child_sentences:
+            return False
+        evidence_text = metadata.get("evidence_text", "") or triplet.get("source", "")
+        return self._evidence_in_child_sentences(str(evidence_text), child_sentences)
+
+    def _triplet_key(self, triplet: dict) -> tuple[str, str, str, str, str]:
+        return (
+            (triplet.get("subject_name") or "").strip(),
+            (triplet.get("subject_type") or "").strip(),
+            (triplet.get("relation") or "").strip(),
+            (triplet.get("object_name") or "").strip(),
+            (triplet.get("object_type") or "").strip(),
+        )
+
+    def refine_with_candidates(
+        self,
+        text: str,
+        source_reference: str,
+        index_data: dict,
+        candidate_parent_ids: list[str],
+        top_event: Optional[str] = None
+    ) -> list[dict]:
+        normalized_top = (top_event or "").strip()
+        filtered_parents, filtered_children = self._filter_index_by_parent_ids(index_data or {}, candidate_parent_ids or [])
+        if not filtered_parents:
+            return []
+
+        parent_lookup = self._build_parent_lookup(filtered_parents)
+        parent_children = self._group_children_by_parent(filtered_children)
+        refined_triplets: list[dict] = []
+
+        for idx, parent in enumerate(filtered_parents, 1):
+            parent_id = str(parent.get("parent_id", "") or "")
+            section = parent.get("source_section", "文档正文")
+            chunk_source = f"{source_reference} | refine_parent {idx}/{len(filtered_parents)} | {section} | {parent_id}"
+            raw = self._extract_once(parent.get("text", ""), chunk_source)
+            parsed = self._safe_parse_triplets(raw)
+            parsed = self._attach_parent_metadata(
+                parsed,
+                parent_lookup.get(parent_id, parent),
+                parent_children.get(parent_id, [])
+            )
+            refined_triplets.extend(parsed)
+
+        refined_triplets = self._deduplicate_triplets(refined_triplets)
+        refined_triplets = self._merge_semantically_similar_triplets(refined_triplets, self.semantic_merge_threshold)
+        candidate_children_map = {}
+        for parent_id, items in parent_children.items():
+            candidate_children_map[parent_id] = [str(item.get("text", "") or "") for item in items if isinstance(item, dict)]
+        refined_triplets = [t for t in refined_triplets if self._triplet_has_candidate_evidence(t, candidate_children_map)]
+        refined_triplets = self._enforce_joint_logic(refined_triplets)
+        refined_triplets = self._repair_event_types(refined_triplets)
+        if normalized_top:
+            scoped = self._collect_top_event_chain(refined_triplets, normalized_top)
+            if scoped:
+                refined_triplets = scoped
+        return self._deduplicate_triplets(refined_triplets)
+
+    def merge_with_refinement(
+        self,
+        base_triplets: list[dict],
+        refined_triplets: list[dict],
+        index_data: dict,
+        candidate_parent_ids: list[str],
+        policy: str = "balanced"
+    ) -> tuple[list[dict], dict[str, Any]]:
+        normalized_policy = (policy or "balanced").strip().lower()
+        if normalized_policy not in {"strict", "balanced"}:
+            normalized_policy = "balanced"
+
+        candidate_set = {str(item).strip() for item in (candidate_parent_ids or []) if str(item).strip()}
+        all_children = list(index_data.get("children", []) or [])
+        candidate_children_map: dict[str, list[str]] = {}
+        for child in all_children:
+            if not isinstance(child, dict):
+                continue
+            metadata = child.get("metadata", {}) or {}
+            parent_id = str(metadata.get("parent_id", "") or "").strip()
+            if not parent_id or parent_id not in candidate_set:
+                continue
+            candidate_children_map.setdefault(parent_id, []).append(str(child.get("text", "") or ""))
+
+        def is_graph_hit(triplet: dict) -> bool:
+            parent_id = str(dict(triplet.get("metadata") or {}).get("parent_id", "") or "").strip()
+            return bool(parent_id and parent_id in candidate_set)
+
+        def has_evidence(triplet: dict) -> bool:
+            return self._triplet_has_candidate_evidence(triplet, candidate_children_map)
+
+        normalized_base = self._ensure_triplet_metadata(base_triplets, index_data)
+        normalized_refined = self._ensure_triplet_metadata(refined_triplets, index_data)
+        refined_strong = [t for t in normalized_refined if is_graph_hit(t) and has_evidence(t)]
+
+        if normalized_policy == "strict":
+            strict_candidates = [t for t in normalized_base if is_graph_hit(t) and has_evidence(t)]
+            merged_candidates = strict_candidates + refined_strong
+        else:
+            balanced_base = []
+            for triplet in normalized_base:
+                confidence = float(triplet.get("confidence", 0.0) or 0.0)
+                if is_graph_hit(triplet) or confidence >= 0.9:
+                    balanced_base.append(triplet)
+            merged_candidates = balanced_base + refined_strong
+
+        by_key = {}
+        for item in merged_candidates:
+            key = self._triplet_key(item)
+            existing = by_key.get(key)
+            if existing is None:
+                by_key[key] = item
+                continue
+            current_conf = float(existing.get("confidence", 0.0) or 0.0)
+            new_conf = float(item.get("confidence", 0.0) or 0.0)
+            if new_conf > current_conf:
+                by_key[key] = item
+
+        merged = list(by_key.values())
+        merged = self._merge_semantically_similar_triplets(merged, self.semantic_merge_threshold)
+        merged = self._enforce_joint_logic(merged)
+        merged = self._repair_event_types(merged)
+        merged = self._deduplicate_triplets(merged)
+
+        stats = {
+            "policy": normalized_policy,
+            "candidate_parent_count": len(candidate_set),
+            "base_triplet_count": len(base_triplets or []),
+            "refined_triplet_count": len(refined_triplets or []),
+            "refined_strong_count": len(refined_strong),
+            "merged_triplet_count": len(merged),
+        }
+        return merged, stats
 
     def extract(
         self,

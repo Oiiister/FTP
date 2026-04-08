@@ -29,3 +29,5 @@ class TripletExtractionResult(BaseModel):
     triplets: List[Triplet]
     parent_child_index: Optional[Dict[str, Any]] = None
     lightrag_graph: Optional[Dict[str, Any]] = None
+    retrieval_trace: Optional[Dict[str, Any]] = None
+    refine_stats: Optional[Dict[str, Any]] = None

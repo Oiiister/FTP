@@ -7,4 +7,4 @@ tenacity
 Pillow
 langgraph
 jieba
-lightrag
+lightrag-hku==1.4.0
