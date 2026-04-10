@@ -8,9 +8,14 @@
 from .schemas import Triplet, TripletExtractionResult
 from .preprocessor import DataPreprocessor
 from .llm_extractor import DeepSeekExtractor
-from .lightrag_engine import LightRAGEngine, create_lightrag_engine
 from .llm_evaluator import QwenEvaluator
 from .parser import parse_response, parse_response_with_validation, parse_triplets
+
+try:
+    from .lightrag_engine import LightRAGEngine, create_lightrag_engine
+except ModuleNotFoundError:
+    LightRAGEngine = None
+    create_lightrag_engine = None
 
 __all__ = [
     "Triplet",

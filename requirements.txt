@@ -8,3 +8,6 @@ Pillow
 langgraph
 jieba
 lightrag-hku==1.4.0
+torch
+transformers
+

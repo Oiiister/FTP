@@ -2,6 +2,7 @@ import os
 import json
 import argparse
 import time
+import importlib
 from pathlib import Path
 from typing import Optional
 from dotenv import load_dotenv
@@ -17,9 +18,16 @@ load_dotenv(dotenv_path=Path(__file__).resolve().with_name(".env"), override=Tru
 
 from src.preprocessor import DataPreprocessor
 from src.llm_extractor import DeepSeekExtractor
-from src.lightrag_engine import create_lightrag_engine
 from src.schemas import TripletExtractionResult
 from pydantic import ValidationError
+
+
+def _load_lightrag_factory():
+    try:
+        module = importlib.import_module("src.lightrag_engine")
+    except ModuleNotFoundError:
+        return None
+    return getattr(module, "create_lightrag_engine", None)
 
 
 def _validate_api_key() -> str:
@@ -67,6 +75,12 @@ def main(
     init_start = time.time()
     preprocessor = DataPreprocessor(use_multimodal_encoding=False)
     extractor = DeepSeekExtractor(semantic_merge_threshold=semantic_merge_threshold)
+    create_lightrag_engine = _load_lightrag_factory()
+    if enable_lightrag and create_lightrag_engine is None:
+        raise ModuleNotFoundError(
+            "已启用 LightRAG，但项目中缺少 src/lightrag_engine.py。"
+            "请补回该文件，或去掉 --enable-lightrag / --enable-lightrag-refine 参数。"
+        )
     rag_engine = create_lightrag_engine(lightrag_working_dir) if enable_lightrag else None
     print(f"✓ 初始化完成 (耗时：{time.time() - init_start:.2f}s)")
     if normalized_top_event:
